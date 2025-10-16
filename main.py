@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 # === CONFIGURACIÓN DE SCRIPTS ===
 SCRIPTS = {
     "investment.sp500": {"interval": 3600, "cooldown": 86400},   # cada 1h, cooldown 24h si activa
-    "maintenance.preventive": {"interval": 3600, "cooldown": 10800},  # cada 1h, cooldown 3h si activa
+    "maintenance.preventive": {"interval": 3600, "cooldown": 86400},  # cada 1h, cooldown 3h si activa
 }
 
 # === CONTROL DE TIEMPOS ===
@@ -18,7 +18,7 @@ async def run_script(name):
     """Ejecuta un script dinámicamente y maneja su cooldown."""
     try:
         module = importlib.import_module(name)
-        print(f"[{datetime.now().strftime('%H:%M:%S')}] Ejecutando {name}...")
+        #print(f"[{datetime.now().strftime('%H:%M:%S')}] Ejecutando {name}...")
 
         # Ejecuta la función principal del módulo
         result = await asyncio.to_thread(module.main)
