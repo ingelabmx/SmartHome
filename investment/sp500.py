@@ -58,7 +58,7 @@ def main(threshold: float = DEFAULT_THRESHOLD) -> bool:
             #print(f"ATH: {ATH_VALUE}")
         else:
             ath = ATH_VALUE
-            print(f"Usando ATH fijo: {ath}")
+            #print(f"Usando ATH fijo: {ath}")
 
         # Calcular caída porcentual
         # caída = (ATH - current) / ATH * 100
