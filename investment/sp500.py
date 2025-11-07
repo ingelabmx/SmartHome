@@ -71,8 +71,7 @@ def main(threshold: float = DEFAULT_THRESHOLD) -> bool:
                 f"El S&P500 ha caído **{drop_pct:.2f}%** desde su maximo historico de **{ATH_VALUE:.2f}**\n"
                 f"Precio actual: **{current:.2f}**\n"
                 f"Umbral configurado: {threshold}%\n"
-                f"Hora: {now.strftime('%Y-%m-%d %H:%M:%S')}\n"
-                f"✅ Es buen momento para invertir!"
+                f"**Tip:** Es buen momento para invertir! ✅"
             )
             send_discord_message(DISCORD_WEBHOOK_URL_INVESTING, message)
             return True

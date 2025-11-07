@@ -3,11 +3,14 @@ import importlib
 import asyncio
 import time
 from datetime import datetime, timedelta
+from utilities.sender import send_discord_message, DISCORD_WEBHOOK_URL_DANGERSTACK
 
 # === CONFIGURACIÓN DE SCRIPTS ===
 SCRIPTS = {
     "investment.sp500": {"interval": 3600, "cooldown": 86400},   # cada 1h, cooldown 24h si activa
-    "maintenance.preventive": {"interval": 3600, "cooldown": 86400},  # cada 1h, cooldown 3h si activa
+    "enviroment.weather": {"interval": 60, "cooldown": 86000},
+    "maintenance.preventive": {"interval": 60, "cooldown": 60},  # cada 60 s, cooldown 60 s
+    "investment.stocks": {"interval": 900, "cooldown": 600} # cada 15 min, cooldown 10 min
 }
 
 # === CONTROL DE TIEMPOS ===
@@ -52,5 +55,20 @@ async def scheduler():
         await asyncio.sleep(10)  # espera pequeña entre iteraciones
 
 if __name__ == "__main__":
+    from datetime import datetime
     print("🚀 Iniciando SmartHome Scheduler...")
+
+    # ✅ Notificación de arranque (siempre que se ejecute main.py)
+    try:
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        scripts_list = ", ".join(SCRIPTS.keys())
+        msg = (
+            f"🟢 **SmartHome Scheduler iniciado**\n"
+            f"Inicio: **{now}**\n"
+            f"Scripts cargados: `{scripts_list}`"
+        )
+        send_discord_message(DISCORD_WEBHOOK_URL_DANGERSTACK, msg)
+    except Exception as e:
+        print(f"⚠️  No se pudo notificar arranque: {e}")
+
     asyncio.run(scheduler())
