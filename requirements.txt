@@ -1,21 +1,47 @@
-pi@raspberrypi.local
+dang@raspberry.local
 
-sudo apt update && sudo apt -y upgrade
-sudo apt -y install tzdata ca-certificates
-sudo timedatectl set-timezone America/Tijuana
-sudo timedatectl set-ntp true
+# SmartHome (Raspberry Pi / Ubuntu Server) - Python requirements
+# --------------------------------------------------------------
+# Contexto:
+# - Host: Raspberry Pi con Ubuntu Server (22.04/24.04)
+# - Python: 3.10–3.12 (verifica con: python3 -V)
+# - Servicio: systemd (smarthome.service) ejecuta /home/dang/apps/smarthome/main.py en venv
+# - Red: netplan con Ethernet preferido, Wi-Fi de respaldo, link-local habilitado
+# - Hora: NTP con chrony + fake-hwclock (apt). El servicio espera red + NTP antes de iniciar.
+#
+# Paquetes de SISTEMA (apt) que NO van en pip (instalarlos antes):
+#   sudo apt update && sudo apt install -y \
+#     python3-venv python3-pip unzip chrony fake-hwclock avahi-daemon
+#
+# Crear venv e instalar:
+#   python3 -m venv .venv
+#   . .venv/bin/activate
+#   pip install --upgrade pip
+#   pip install -r requirements.txt
+#
+# Congelar versiones exactas (para clonado 1:1 en otro Pi):
+#   pip freeze > requirements.lock
+#   # Luego en el otro Pi (mismo Python): pip install -r requirements.lock
+#
+# --- Librerías Python ---
 
-sudo apt -y install python3 python3-venv python3-pip
-python3 -m venv .venv
-source .venv/bin/activate
-pip install --upgrade pip
+# Cliente HTTP usado para webhooks (Discord) y llamadas web
+requests>=2.31,<3
 
-pip install requests yfinance pandas numpy tzdata
+# Capa HTTP subyacente (manejo de conexiones/reintentos); compatible con requests
+urllib3>=2.0,<3
 
-Para iniciar al encender:
-sudo nano /etc/rc.local
-	su - pi -c 'cd /home/pi/smarthome && /usr/bin/python3 main.py >> /home/pi/smarthome/boot.log 2>&1 &'
+# Programador de tareas simple en memoria (si tu app agenda jobs)
+schedule>=1.2
 
+# Cargar variables desde .env (tokens, claves, configs)
+python-dotenv>=1.0
 
-REVISAR LOGS:
-sudo systemctl status smarthome --no-pager
+# Reintentos con backoff (opcional; útil si tus requests reintentan)
+tenacity>=8.2
+
+# Utilidades de tiempo/fechas (parsing, offsets); opcional pero práctico
+python-dateutil>=2.8
+
+# Detectar zona horaria local (si lo necesitas para logs/formatos)
+tzlocal>=5.2
