@@ -1,3 +1,5 @@
+pi@raspberrypi.local
+
 sudo apt update && sudo apt -y upgrade
 sudo apt -y install tzdata ca-certificates
 sudo timedatectl set-timezone America/Tijuana
@@ -9,3 +11,11 @@ source .venv/bin/activate
 pip install --upgrade pip
 
 pip install requests yfinance pandas numpy tzdata
+
+Para iniciar al encender:
+sudo nano /etc/rc.local
+	su - pi -c 'cd /home/pi/smarthome && /usr/bin/python3 main.py >> /home/pi/smarthome/boot.log 2>&1 &'
+
+
+REVISAR LOGS:
+sudo systemctl status smarthome --no-pager
