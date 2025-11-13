@@ -1,5 +1,7 @@
 dang@raspberry.local
 
+Check log: sudo systemctl status smarthome --no-pager -l
+
 # SmartHome (Raspberry Pi / Ubuntu Server) - Python requirements
 # --------------------------------------------------------------
 # Contexto:

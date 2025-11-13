@@ -111,10 +111,6 @@ def _maybe_alert(symbol: str) -> bool:
 
     except Exception as e:
         logging.error(f"[{symbol}] error: {e}")
-        try:
-            send_discord_message(DISCORD_WEBHOOK_URL_INVESTING, f"❌ Error {symbol}: {e}")
-        except Exception:
-            pass
         return False
         
 def _load_state() -> dict:
